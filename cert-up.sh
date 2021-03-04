@@ -12,6 +12,9 @@ ACME_BIN_PATH=${BASE_ROOT}/acme.sh
 TEMP_PATH=${BASE_ROOT}/temp
 CRT_PATH_NAME=`cat ${CRT_BASE_PATH}/_archive/DEFAULT`
 CRT_PATH=${CRT_BASE_PATH}/_archive/${CRT_PATH_NAME}
+CPY_SRC_PATH="/"
+USR=""
+SERVER=""
 
 backupCrt () {
   echo 'begin backupCrt'
@@ -65,6 +68,10 @@ generateCrt () {
   fi
 }
 
+fetchCrt () {
+  scp -r ${USR}@{$SERVER}:${CPY_SRC_PATH} ${CRT_PATH}
+}
+
 updateService () {
   echo 'begin updateService'
   echo 'cp cert path to des'
@@ -103,9 +110,10 @@ revertCrt () {
 
 updateCrt () {
   echo '------ begin updateCrt ------'
-  backupCrt
-  installAcme
-  generateCrt
+  #backupCrt
+  #installAcme
+  #generateCrt
+  fetchCrt
   updateService
   reloadWebService
   echo '------ end updateCrt ------'
